@@ -1,9 +1,13 @@
 import { useState } from "react";
+import "../App.css";
 
 function Calculadora() {
   var [numero, setNumero] = useState(0);
   var [showNum1, setShowNum1] = useState(0);
+  var [showNum2, setShowNum2] = useState(0);
   var [operacao, setOperacao] = useState("");
+  var [resultado, setResultado] = useState(0);
+  //var resultado = 0;
 
   const handleClick = (parNumero) => {
     if (numero === 0) {
@@ -36,14 +40,7 @@ function Calculadora() {
     setOperacao(operacao);
     setNumero(0);
   };
-  //{showNum1} {operacao} {showNum2} = {result}
-
-  const handleClickEquals = (numero, showNum1, operacao) => {
-    //setShowNum2(numero);
-    const result = calcula(showNum1, numero, operacao);
-    setNumero(result);
-    setOperacao("");
-  };
+  //{showNum1} {operacao} {numero} = {resultado} / {showNum2}
 
   const handleClickDelete = () => {
     if (numero >= 10) {
@@ -53,51 +50,138 @@ function Calculadora() {
     }
   };
 
+  const handleClickClear = () => {
+    setNumero(0);
+    setShowNum1(0);
+    setShowNum2(0);
+    setResultado(0);
+    setOperacao("");
+  };
+
+  const handleClickEquals = (numero, showNum1, operacao) => {
+    let result;
+    if (resultado !== 0) {
+      const num2 = showNum2;
+      result = calcula(resultado, num2, operacao);
+      setResultado(result);
+    } else {
+      result = calcula(showNum1, numero, operacao);
+      setResultado(result);
+      setShowNum2(numero);
+    }
+    setNumero(result);
+  };
+
+  function calcula(num1, num2, operacao) {
+    if (operacao === "+") {
+      return num1 + num2;
+    } else if (operacao === "-") {
+      return num1 - num2;
+    } else if (operacao === "*") {
+      return num1 * num2;
+    } else if (operacao === "/") {
+      return num1 / num2;
+    } else {
+      return num2;
+    }
+  }
+
   return (
-    <div>
-      <p>{numero}</p>
-      <div>
-        <button onClick={handleClickDelete}>D</button>
-        <button onClick={() => handleClick(0)}>0</button>
-        <button onClick={() => handleClickMultiply(numero, "*")}>*</button>
-        <button onClick={() => handleClickDivide(numero, "/")}>/</button>
+    <div className="calculadora">
+      <div className="placa">
+        <div className="monitor">
+          <p>{numero}</p>
+        </div>
+        <div className="teclas">
+          <div className="linha">
+            <button className="botao" onClick={handleClickClear}>
+              C
+            </button>
+            <button
+              className="botao"
+              onClick={() => handleClickDivide(numero, "/")}
+            >
+              /
+            </button>
+            <button
+              className="botao"
+              onClick={() => handleClickMultiply(numero, "*")}
+            >
+              X
+            </button>
+            <button className="botao" onClick={() => handleClickDelete}>
+              ←
+            </button>
+          </div>
+          <div className="linha">
+            <button className="botao" onClick={() => handleClick(7)}>
+              7
+            </button>
+            <button className="botao" onClick={() => handleClick(8)}>
+              8
+            </button>
+            <button className="botao" onClick={() => handleClick(9)}>
+              9
+            </button>
+            <button
+              className="botao"
+              onClick={() => handleClickMultiply(numero, "*")}
+            >
+              X
+            </button>
+          </div>
+          <div className="linha">
+            <button className="botao" onClick={() => handleClick(4)}>
+              4
+            </button>
+            <button className="botao" onClick={() => handleClick(5)}>
+              5
+            </button>
+            <button className="botao" onClick={() => handleClick(6)}>
+              6
+            </button>
+            <button
+              className="botao"
+              onClick={() => handleClickMinus(numero, "-")}
+            >
+              -
+            </button>
+          </div>
+          <div className="linha">
+            <button className="botao" onClick={() => handleClick(1)}>
+              1
+            </button>
+            <button className="botao" onClick={() => handleClick(2)}>
+              2
+            </button>
+            <button className="botao" onClick={() => handleClick(3)}>
+              3
+            </button>
+            <button
+              className="botao"
+              onClick={() => handleClickPlus(numero, "+")}
+            >
+              +
+            </button>
+          </div>
+          <div className="linha">
+            <button className="botaoDuplo" onClick={() => handleClick(0)}>
+              0
+            </button>
+            <button
+              className="botaoDuplo"
+              onClick={() => handleClickEquals(numero, showNum1, operacao)}
+            >
+              =
+            </button>
+          </div>
+        </div>
       </div>
-      <div>
-        <button onClick={() => handleClick(7)}>7</button>
-        <button onClick={() => handleClick(8)}>8</button>
-        <button onClick={() => handleClick(9)}>9</button>
-        <button onClick={() => handleClickMinus(numero, "-")}>-</button>
-      </div>
-      <div>
-        <button onClick={() => handleClick(4)}>4</button>
-        <button onClick={() => handleClick(5)}>5</button>
-        <button onClick={() => handleClick(6)}>6</button>
-        <button onClick={() => handleClickPlus(numero, "+")}>+</button>
-      </div>
-      <div>
-        <button onClick={() => handleClick(1)}>1</button>
-        <button onClick={() => handleClick(2)}>2</button>
-        <button onClick={() => handleClick(3)}>3</button>
-        <button onClick={() => handleClickEquals(numero, showNum1, operacao)}>
-          =
-        </button>
-      </div>
+      <p>
+        {showNum1} {operacao} {numero} = {resultado} / {showNum2}
+      </p>
     </div>
   );
-}
-
-function calcula(num1, num2, operacao) {
-  if (operacao === "+") {
-    return num1 + num2;
-  } else if (operacao === "-") {
-    return num1 - num2;
-  } else if (operacao === "*") {
-    return num1 * num2;
-  } else if (operacao === "/") {
-    return num1 / num2;
-  } else {
-    return num2;
-  }
 }
 
 export default Calculadora;
