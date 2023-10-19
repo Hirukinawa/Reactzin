@@ -3,7 +3,7 @@ import "../App.css";
 import CalcButton from "./calcButton";
 import CalcButtonDuplo from "./calcButtonDuplo";
 
-function Calculadora() {
+export default function Calculadora() {
   var [numero, setNumero] = useState(0);
   var [showNum1, setShowNum1] = useState(0);
   var [showNum2, setShowNum2] = useState(0);
@@ -11,7 +11,6 @@ function Calculadora() {
   var [ultima, setUltima] = useState(null);
   var [lastOp, setlastOp] = useState(null);
   var [isDecimal, setIsDecimal] = useState(false);
-  console.log("renderizou");
 
   const handleClick = (parNumero) => {
     if (numero >= 999999999999) {
@@ -39,7 +38,7 @@ function Calculadora() {
       if (showNum2 !== 0) {
         if (lastOp === null) {
           setOperacao(parOperacao);
-          setShowNum1(calcula(showNum1, showNum2, operacao));
+          setShowNum1(calcula(Number(showNum1), Number(showNum2), operacao));
           setNumero(0);
           setUltima(null);
           setlastOp(parOperacao);
@@ -189,5 +188,3 @@ function Calculadora() {
     </>
   );
 }
-
-export default Calculadora;

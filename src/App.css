@@ -47,3 +47,13 @@
 .botaoDuplo {
   width: 51.5px;
 }
+
+.volumes {
+  display: flex;
+  flex-direction: column;
+}
+
+.volumesLista {
+  
+  margin: 30px;
+}
